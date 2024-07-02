@@ -1,5 +1,5 @@
-# create a task to send meeting invites to all attendees
-triggers:
-  - filter: ''
+# create task to send meeting invites via defined transport (e.g. email)
+trigger:
+ - filter: 'concept=semcal:concept:event:meeting and status=new'
 actions:
-  - template: ''
+  - template: 'org.ical4j.actions.tasks.SendMeetingInvitations'
