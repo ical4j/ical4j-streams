@@ -1,0 +1,5 @@
+# create a task to send meeting invites to all attendees
+triggers:
+  - filter: ''
+actions:
+  - template: ''
