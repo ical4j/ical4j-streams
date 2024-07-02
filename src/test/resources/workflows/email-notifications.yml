@@ -1,0 +1,5 @@
+# create task to send email notifications when defined in meetings (via VALARM)
+trigger:
+ - filter: 'concept=semcal:concept:event:meeting'
+actions:
+ - template: 'org.ical4j.actions.tasks.AlarmEmailNotifications'
