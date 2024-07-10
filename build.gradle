@@ -1,14 +1,185 @@
-group 'org.mnode.ical4j'
-version '0.9-SNAPSHOT'
+plugins {
+    id 'java'
+    id 'java-library'
+    id 'groovy'
+    id 'maven-publish'
+    id 'jacoco'
+    id 'signing'
+    id "pl.allegro.tech.build.axion-release" version "1.13.6"
+    id "com.palantir.revapi" version "1.7.0"
+//    id "net.ltgt.errorprone" version "2.0.2" apply false
+//    id "biz.aQute.bnd.builder" version "$bndVersion"
+    id 'org.javamodularity.moduleplugin' version '1.8.14'
+}
 
-apply plugin: 'java'
-
-sourceCompatibility = 1.8
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
 
 repositories {
     mavenCentral()
+    mavenLocal()
+    maven {
+        url 'https://s01.oss.sonatype.org/content/repositories/snapshots'
+    }
 }
 
+jar {
+    duplicatesStrategy = DuplicatesStrategy.WARN
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+sourcesJar.dependsOn 'compileModuleInfoJava'
+
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    api("org.mnode.ical4j:ical4j:$ical4jVersion") {
+        capabilities {
+            requireCapability("org.mnode.ical4j:ical4j-filter-expressions")
+        }
+    }
+
+    api "org.ical4j:ical4j-integration-mail:$ical4jIntegrationVersion"
+
+//    errorprone "com.google.errorprone:error_prone_core:2.3.3"
+//    errorproneJavac "com.google.errorprone:javac:9+181-r4173-1"
+
+    // test dependencies
+    testImplementation "org.junit.jupiter:junit-jupiter:$junitVintageVersion"
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // spock
+    testImplementation platform("org.spockframework:spock-bom:$spockVersion"),
+            "org.spockframework:spock-core"
+}
+
+test {
+//    moduleOptions {
+//        runOnClasspath = true
+//    }
+
+    useJUnitPlatform()
+
+    finalizedBy jacocoTestCoverageVerification, jacocoTestReport // Ensure Jacoco is run after tests have completed
+
+    jvmArgs = [ "-Duser.timezone=UTC" ] // Some tests require default timezone to be UTC
+}
+
+jacocoTestCoverageVerification {
+    dependsOn test
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.7
+            }
+            failOnViolation = false
+        }
+    }
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = true
+        html.required = jacoco_htmlReport == 'true'
+    }
+}
+
+javadoc {
+//    options.addBooleanOption('-no-module-directories', true)
+    if (JavaVersion.current().isJava8Compatible()) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+    }
+    options {
+        links 'https://docs.oracle.com/en/java/javase/11/docs/api/'
+    }
+}
+
+scmVersion {
+    tag {
+        prefix = 'ical4j-actions-'
+    }
+    versionCreator 'versionWithBranch'
+    branchVersionCreator = ['main': 'simple']
+    nextVersion {
+        suffix = 'pre'
+        separator = '-'
+    }
+}
+
+group = 'org.ical4j'
+description = '''
+Workflow automation for iCalendar
+'''
+version = scmVersion.version
+
+jar {
+    manifest {
+        attributes (
+                'Implementation-Title': 'iCal4j Actions',
+                'Implementation-Version': version,
+                'Implementation-Vendor': 'Ben Fortuna'
+        )
+    }
+}
+
+revapi {
+    oldVersion = revApiOldVersion
+}
+
+ext {
+    isReleaseVersion = !version.endsWith("SNAPSHOT")
+}
+
+publishing {
+    publications {
+        ical4j_actions(MavenPublication) {
+            from components.java
+            pom.withXml {
+                asNode().appendNode('name', project.name)
+                asNode().appendNode('description', project.description)
+                asNode().appendNode('url', 'http://ical4j.github.io')
+
+                def scmNode = asNode().appendNode('scm')
+                scmNode.appendNode('url', 'https://github.com/ical4j/ical4j-actions')
+                scmNode.appendNode('connection', 'scm:git@github.com:ical4j/ical4j-actions.git')
+                scmNode.appendNode('developerConnection', 'scm:git@github.com:ical4j/ical4j-actions.git')
+
+                def licenseNode = asNode().appendNode('licenses').appendNode('license')
+                licenseNode.appendNode('name', 'BSD-3-Clause')
+                licenseNode.appendNode('url', 'https://raw.githubusercontent.com/ical4j/ical4j/master/LICENSE.txt')
+                licenseNode.appendNode('distribution', 'repo')
+
+                def developerNode = asNode().appendNode('developers').appendNode('developer')
+                developerNode.appendNode('id', 'fortuna')
+                developerNode.appendNode('name', 'Ben Fortuna')
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = "OSSRH"
+            url = !isReleaseVersion ? "https://s01.oss.sonatype.org/content/repositories/snapshots/" : "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                username = System.getenv("MAVEN_USERNAME")
+                password = System.getenv("MAVEN_PASSWORD")
+            }
+        }
+//        maven {
+//            name = "GitHubPackages"
+//            url = uri("https://maven.pkg.github.com/ical4j/ical4j")
+//            credentials {
+//                username = System.getenv("GPR_USERNAME")
+//                password = System.getenv("GPR_TOKEN")
+//            }
+//        }
+    }
+}
+
+signing {
+    required { isReleaseVersion }
+    sign publishing.publications.ical4j_actions
 }
