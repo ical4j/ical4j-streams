@@ -19,6 +19,9 @@ repositories {
     mavenCentral()
     mavenLocal()
     maven {
+        url 'https://oss.sonatype.org/content/repositories/snapshots'
+    }
+    maven {
         url 'https://s01.oss.sonatype.org/content/repositories/snapshots'
     }
 }
@@ -32,8 +35,6 @@ java {
     withSourcesJar()
 }
 
-sourcesJar.dependsOn 'compileModuleInfoJava'
-
 dependencies {
     api("org.mnode.ical4j:ical4j:$ical4jVersion") {
         capabilities {
@@ -41,7 +42,8 @@ dependencies {
         }
     }
 
-    api "org.ical4j:ical4j-integration-mail:$ical4jIntegrationVersion"
+    api "org.ical4j:ical4j-template:$ical4jTemplateVersion",
+            "org.slf4j:slf4j-api:$slf4jVersion"
 
 //    errorprone "com.google.errorprone:error_prone_core:2.3.3"
 //    errorproneJavac "com.google.errorprone:javac:9+181-r4173-1"
