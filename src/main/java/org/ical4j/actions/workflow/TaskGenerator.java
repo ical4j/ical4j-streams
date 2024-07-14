@@ -1,6 +1,7 @@
-package org.ical4j.actions;
+package org.ical4j.actions.workflow;
 
 import net.fortuna.ical4j.model.component.VToDo;
+import org.ical4j.actions.Trigger;
 
 import java.io.IOException;
 import java.io.Serializable;

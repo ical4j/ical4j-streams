@@ -1,6 +1,7 @@
-package org.ical4j.actions;
+package org.ical4j.actions.workflow;
 
 import net.fortuna.ical4j.model.component.VToDo;
+import org.ical4j.actions.Trigger;
 import org.ical4j.template.AbstractTemplate;
 
 import java.io.Serializable;
@@ -17,19 +18,23 @@ import java.util.function.Predicate;
  */
 public class ConditionalTaskGenerator<T extends Serializable> implements TaskGenerator<T> {
 
-    private final Predicate<T> predicate;
+    private Predicate<T> predicate;
 
-    private final AbstractTemplate<VToDo> template;
+    private AbstractTemplate<VToDo> template;
 
     public ConditionalTaskGenerator(Predicate<T> predicate, AbstractTemplate<VToDo> template) {
         this.predicate = predicate;
         this.template = template;
     }
 
+    public ConditionalTaskGenerator(VToDo action) {
+
+    }
+
     @Override
     public List<VToDo> generate(Trigger<T> trigger) {
         List<VToDo> tasks = new ArrayList<>();
-        if (predicate.test(trigger.getComponent())) {
+        if (predicate.test(trigger.getSource())) {
             try {
                 tasks.add(template.apply());
             } catch (NoSuchMethodException | InvocationTargetException |

@@ -5,4 +5,5 @@ module ical4j.actions.main {
     requires org.slf4j;
 
     exports org.ical4j.actions;
+    exports org.ical4j.actions.workflow;
 }

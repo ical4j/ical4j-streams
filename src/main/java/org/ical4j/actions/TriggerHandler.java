@@ -16,11 +16,7 @@
 
 package org.ical4j.actions;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.Serializable;
-import java.util.concurrent.Flow;
 
 public interface TriggerHandler<T extends Serializable> {
 

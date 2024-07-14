@@ -30,31 +30,31 @@ import java.time.Instant;
  */
 public class Trigger<T extends Serializable> implements Serializable {
 
-    private final URI source;
+    private final URI context;
 
-    private final T component;
+    private final T source;
 
     private final TriggerType type;
 
     private final Instant timestamp;
 
-    public Trigger(T component, TriggerType type) {
-        this(null, component, type);
+    public Trigger(T source, TriggerType type) {
+        this(null, source, type);
     }
 
-    public Trigger(URI source, T component, TriggerType type) {
+    public Trigger(URI context, T source, TriggerType type) {
+        this.context = context;
         this.source = source;
-        this.component = component;
         this.type = type;
         this.timestamp = Instant.now();
     }
 
-    public URI getSource() {
-        return source;
+    public URI getContext() {
+        return context;
     }
 
-    public T getComponent() {
-        return component;
+    public T getSource() {
+        return source;
     }
 
     public TriggerType getType() {
