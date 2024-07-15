@@ -24,7 +24,7 @@ import java.net.URI;
  * external source, and modifying an existing component are all events that
  * can generate a trigger.
  */
-public enum TriggerType {
+public enum RecordType {
     Timer("semcal:trigger:timer", "Timer trigger", ""),
 
     // created, deleted, updated, published,
@@ -50,7 +50,7 @@ public enum TriggerType {
 
     private final String description;
 
-    TriggerType(String uri, String name, String description) {
+    RecordType(String uri, String name, String description) {
         this.uri = URI.create(uri);
         this.name = name;
         this.description = description;

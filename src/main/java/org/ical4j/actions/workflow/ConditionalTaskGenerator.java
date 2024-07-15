@@ -1,7 +1,7 @@
 package org.ical4j.actions.workflow;
 
 import net.fortuna.ical4j.model.component.VToDo;
-import org.ical4j.actions.Trigger;
+import org.ical4j.actions.Record;
 import org.ical4j.template.AbstractTemplate;
 
 import java.io.Serializable;
@@ -32,9 +32,9 @@ public class ConditionalTaskGenerator<T extends Serializable> implements TaskGen
     }
 
     @Override
-    public List<VToDo> generate(Trigger<T> trigger) {
+    public List<VToDo> generate(Record<T> record) {
         List<VToDo> tasks = new ArrayList<>();
-        if (predicate.test(trigger.getSource())) {
+        if (predicate.test(record.getSource())) {
             try {
                 tasks.add(template.apply());
             } catch (NoSuchMethodException | InvocationTargetException |

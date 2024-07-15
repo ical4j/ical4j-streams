@@ -1,7 +1,7 @@
 package org.ical4j.actions.workflow;
 
 import net.fortuna.ical4j.model.component.VToDo;
-import org.ical4j.actions.Trigger;
+import org.ical4j.actions.Record;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -21,5 +21,5 @@ import java.util.List;
  */
 public interface TaskGenerator<T extends Serializable> {
 
-    List<VToDo> generate(Trigger<T> trigger) throws ParseException, IOException, URISyntaxException;
+    List<VToDo> generate(Record<T> record) throws ParseException, IOException, URISyntaxException;
 }

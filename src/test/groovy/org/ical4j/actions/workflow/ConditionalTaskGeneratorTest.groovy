@@ -1,6 +1,6 @@
-package org.ical4j.actions
+package org.ical4j.actions.workflow
 
-import org.ical4j.actions.workflow.ConditionalTaskGenerator
+
 import org.ical4j.template.groupware.Action
 import spock.lang.Specification
 

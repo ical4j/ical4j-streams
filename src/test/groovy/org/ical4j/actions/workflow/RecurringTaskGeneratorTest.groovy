@@ -1,9 +1,8 @@
-package org.ical4j.actions
+package org.ical4j.actions.workflow
 
 import net.fortuna.ical4j.model.ContentBuilder
 import net.fortuna.ical4j.model.Period
 import net.fortuna.ical4j.model.component.VToDo
-import org.ical4j.actions.workflow.RecurringTaskGenerator
 import spock.lang.Shared
 import spock.lang.Specification
 

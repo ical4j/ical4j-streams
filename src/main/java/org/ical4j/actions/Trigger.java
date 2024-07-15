@@ -17,51 +17,9 @@
 package org.ical4j.actions;
 
 import java.io.Serializable;
-import java.net.URI;
-import java.time.Instant;
 
-/**
- * A trigger encapsulates contextual data that may be relevant when evaluating
- * defined actions. A trigger includes the source of the event that lead to the
- * trigger being generated, the evaluation target, the type of event and a timestamp
- * indicating when the event occurred.
- *
- * @param <T> the evaluation target type
- */
-public class Trigger<T extends Serializable> implements Serializable {
+public interface Trigger<T extends Serializable> {
 
-    private final URI context;
+    void onRecord(Record<T> record);
 
-    private final T source;
-
-    private final TriggerType type;
-
-    private final Instant timestamp;
-
-    public Trigger(T source, TriggerType type) {
-        this(null, source, type);
-    }
-
-    public Trigger(URI context, T source, TriggerType type) {
-        this.context = context;
-        this.source = source;
-        this.type = type;
-        this.timestamp = Instant.now();
-    }
-
-    public URI getContext() {
-        return context;
-    }
-
-    public T getSource() {
-        return source;
-    }
-
-    public TriggerType getType() {
-        return type;
-    }
-
-    public Instant getTimestamp() {
-        return timestamp;
-    }
 }

@@ -6,16 +6,21 @@ import org.slf4j.LoggerFactory;
 import java.io.Serializable;
 import java.util.concurrent.Flow;
 
-public class TriggerSubscriber<T extends Serializable> implements Flow.Subscriber<Trigger<T>> {
+/**
+ * Support for subscribing to trigger publishers by invoking the associated handler.
+ *
+ * @param <T>
+ */
+public class RecordSubscriber<T extends Serializable> implements Flow.Subscriber<Record<T>> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TriggerSubscriber.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RecordSubscriber.class);
 
-    private final TriggerHandler<T> handler;
+    private final Trigger<T> trigger;
 
     private Flow.Subscription subscription;
 
-    public TriggerSubscriber(TriggerHandler<T> handler) {
-        this.handler = handler;
+    public RecordSubscriber(Trigger<T> trigger) {
+        this.trigger = trigger;
     }
 
     @Override
@@ -26,8 +31,8 @@ public class TriggerSubscriber<T extends Serializable> implements Flow.Subscribe
     }
 
     @Override
-    public void onNext(Trigger<T> item) {
-        handler.onTrigger(item);
+    public void onNext(Record<T> item) {
+        trigger.onRecord(item);
         subscription.request(1);
     }
 

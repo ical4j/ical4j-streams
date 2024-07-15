@@ -2,8 +2,8 @@ package org.ical4j.actions.workflow;
 
 import net.fortuna.ical4j.model.Period;
 import net.fortuna.ical4j.model.component.VToDo;
+import org.ical4j.actions.Record;
 import org.ical4j.actions.Trigger;
-import org.ical4j.actions.TriggerHandler;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
-public class WorkflowProcessor<T extends Serializable> implements TriggerHandler<T> {
+public class WorkflowProcessor<T extends Serializable> implements Trigger<T> {
 
     private final List<VToDo> actions = new CopyOnWriteArrayList<>();
 
@@ -29,19 +29,19 @@ public class WorkflowProcessor<T extends Serializable> implements TriggerHandler
     }
 
     @Override
-    public void onTrigger(Trigger<T> change) {
+    public void onRecord(Record<T> record) {
         List<VToDo> result;
-        switch (change.getType()) {
+        switch (record.getType()) {
             case Timer:
                 result = actions.stream().map(action -> {
                     try {
-                        return new RecurringTaskGenerator(action).generate((Trigger<Period<Temporal>>) change);
+                        return new RecurringTaskGenerator(action).generate((Record<Period<Temporal>>) record);
                     } catch (ParseException | IOException | URISyntaxException e) {
                         return new ArrayList<VToDo>();
                     }
                 }).flatMap(Collection::stream).collect(Collectors.toList());
             default:
-                result = actions.stream().map(action -> new ConditionalTaskGenerator<T>(action).generate(change))
+                result = actions.stream().map(action -> new ConditionalTaskGenerator<T>(action).generate(record))
                         .flatMap(Collection::stream).collect(Collectors.toList());
         }
         //xxx: process resulting tasks..
