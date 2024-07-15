@@ -1,4 +1,4 @@
-package org.ical4j.actions.workflow
+package org.ical4j.streams.workflow
 
 
 import org.ical4j.template.groupware.Action

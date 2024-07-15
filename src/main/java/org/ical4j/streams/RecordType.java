@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package org.ical4j.actions;
+package org.ical4j.streams;
 
 import java.net.URI;
 

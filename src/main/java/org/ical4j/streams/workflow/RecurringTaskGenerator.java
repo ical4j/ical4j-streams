@@ -1,10 +1,10 @@
-package org.ical4j.actions.workflow;
+package org.ical4j.streams.workflow;
 
 import net.fortuna.ical4j.model.Period;
 import net.fortuna.ical4j.model.component.VToDo;
 import net.fortuna.ical4j.model.property.LastModified;
 import net.fortuna.ical4j.model.property.immutable.ImmutableStatus;
-import org.ical4j.actions.Record;
+import org.ical4j.streams.Record;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

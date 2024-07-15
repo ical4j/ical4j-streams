@@ -4,6 +4,6 @@ module ical4j.actions.main {
     requires jakarta.mail;
     requires org.slf4j;
 
-    exports org.ical4j.actions;
-    exports org.ical4j.actions.workflow;
+    exports org.ical4j.streams;
+    exports org.ical4j.streams.workflow;
 }

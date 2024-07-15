@@ -1,9 +1,9 @@
-package org.ical4j.actions.workflow;
+package org.ical4j.streams.workflow;
 
 import net.fortuna.ical4j.model.Period;
 import net.fortuna.ical4j.model.component.VToDo;
-import org.ical4j.actions.Record;
-import org.ical4j.actions.Trigger;
+import org.ical4j.streams.Record;
+import org.ical4j.streams.Trigger;
 
 import java.io.IOException;
 import java.io.Serializable;

@@ -1,4 +1,4 @@
-package org.ical4j.actions.workflow
+package org.ical4j.streams.workflow
 
 import net.fortuna.ical4j.model.ContentBuilder
 import net.fortuna.ical4j.model.Period

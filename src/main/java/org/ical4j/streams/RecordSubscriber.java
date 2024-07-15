@@ -1,4 +1,4 @@
-package org.ical4j.actions;
+package org.ical4j.streams;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
