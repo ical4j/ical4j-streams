@@ -9,8 +9,11 @@ other event-driven behaviours. The general idea is that in a bounded context, de
 updated) can trigger fixed or configurable responses.
 
 For example, when you create a new meeting it must be forwarded to all participants in order for them
-to communicate their availability (i.e. accept or decline). Similarly, when the system receives a response from a
-participant (as a modified object) it must update the corresponding event with their participation status.
+to communicate their availability (i.e. accept or decline). The context in this instance is a Calendar User
+Agent (CUA) capable of securely (and durably) sending email via a configured transport (i.e. SMTP).
+
+Similarly, when the CUA receives a response from a participant (as a modified object), via a configured transport
+(i.e. POP3 or IMAP), it must be able to locate and update the corresponding event with their participation status.
 
 These are examples of predefined workflow automation within a calendaring system, however it is also conceivable to
 support customisable workflows to support bespoke solutions. iCal4j Streams allows you to define intent-based actions
