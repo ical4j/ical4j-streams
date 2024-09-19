@@ -1,17 +1,20 @@
-# iCal4j Actions
+# iCal4j Streams
 
-Workflow automation for iCalendar
+Reactive programming for iCalendar (and vCard)
 
 ## Introduction
 
-Calendaring and scheduling systems often include predefined and customisable workflow behaviours based on triggers and
-object state. When you create a new meeting it must be forwarded to all participants in order for them
+Streams provides a means to respond to changes in model state, useful when implementing automated workflows and
+other event-driven behaviours. The general idea is that in a bounded context, delivery of a model object (new or
+updated) can trigger fixed or configurable responses.
+
+For example, when you create a new meeting it must be forwarded to all participants in order for them
 to communicate their availability (i.e. accept or decline). Similarly, when the system receives a response from a
-participant it must update the corresponding event with their participation status.
+participant (as a modified object) it must update the corresponding event with their participation status.
 
 These are examples of predefined workflow automation within a calendaring system, however it is also conceivable to
-support customisable workflows to support bespoke solutions. iCal4j Actions allows you to define intent-based actions
-in response to triggers, and the corresponding automation to fulfil those intents.
+support customisable workflows to support bespoke solutions. iCal4j Streams allows you to define intent-based actions
+in response to triggers, and the corresponding automation to fulfill those intents.
 
 ## Workflow Rules
 
